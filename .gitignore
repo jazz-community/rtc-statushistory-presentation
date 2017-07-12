@@ -4,3 +4,4 @@ package-lock.json
 *Bundle.js
 jbe-build-wrapper.xml
 .jazzignore
+deployment-properties.ini

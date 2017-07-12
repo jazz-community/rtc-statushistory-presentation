@@ -3,6 +3,9 @@ const JazzUpdateSitePlugin = require('jazz-update-site-webpack-plugin');
 const packageJson = require('./package.json');
 
 module.exports = (env) => {
+    env.buildUUID && console.info(`Build UUID is passed along: '${env.buildUUID}'`);
+    const version = env.buildUUID || packageJson.version;
+
     const config = {
         entry: {
             StatusHistory: './index.js' // not used, prevent webpack from failing
@@ -13,7 +16,7 @@ module.exports = (env) => {
         plugins: [
             new JazzUpdateSitePlugin({
                 appType: 'ccm',
-                projectId: packageJson.name,
+                projectId: "com.siemens.bt.jazz.rtc.workitemeditor.presentation.statushistory",
                 acceptGlobPattern: [
                     'resources/**',
                     'META-INF/**',
@@ -24,7 +27,7 @@ module.exports = (env) => {
                     copyright: packageJson.author,
                     description: packageJson.description,
                     license: packageJson.license,
-                    version: packageJson.version,
+                    version: version,
                 },
             }),
         ],
