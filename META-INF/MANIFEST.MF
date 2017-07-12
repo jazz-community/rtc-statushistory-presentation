@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-SymbolicName: com.siemens.bt.jazz.rtc.workItemEditor.presentation.statusHistory;singleton:=true
+Bundle-Name: Work Item Editor Status History Presentation for RTC
+Bundle-Version: 1.0.0
+Require-Bundle: 
+ net.jazz.ajax;bundle-version="2.3.200",
+ com.ibm.team.workitem.service
+Bundle-ManifestVersion: 2
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-Vendor: Siemens Building Technologies

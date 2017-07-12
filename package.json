@@ -1,0 +1,20 @@
+{
+  "name": "com.siemens.bt.jazz.rtc.workitemeditor.presentation.statushistory",
+  "version": "1.0.0",
+  "description": "a non-Attribute-based Work Item Editor Extension for Rational Team Concert that shows all Status changes since the creation of the work item in form of a timeline.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jazz-community/rtc-statushistory-presentation.git"
+  },
+  "keywords": [
+    "jazz",
+    "rtc",
+    "workitem"
+  ],
+  "author": "Lukas Steiger, Siemens AG",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jazz-community/rtc-statushistory-presentation/issues"
+  },
+  "homepage": "http://jazz-community.org"
+}

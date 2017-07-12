@@ -1,0 +1,17 @@
+.historyEntry {
+	border: 1px solid grey;
+	border-radius: 3px;
+	color: #666666;
+	text-align: center;
+}
+
+.historyEntry  > span{
+	display: block;
+	margin: 5px;
+}
+
+.historyEntryArrow {
+	margin: 0;
+	color: #666666;
+	text-align: center;
+}
