@@ -3,8 +3,8 @@ const JazzUpdateSitePlugin = require('jazz-update-site-webpack-plugin');
 const packageJson = require('./package.json');
 
 module.exports = (env) => {
-    env.buildUUID && console.info(`Build UUID is passed along: '${env.buildUUID}'`);
-    const version = env.buildUUID || packageJson.version;
+    const version = (env && env.buildUUID) || packageJson.version;
+    version && console.info(`Build UUID is passed along: '${version}'`);
 
     const config = {
         entry: {
