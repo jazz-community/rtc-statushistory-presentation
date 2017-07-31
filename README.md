@@ -1,7 +1,7 @@
 # Status History Presentation for RTC
 Rational Team Concert (RTC) has a built-in feature to view the history of a work item. But especially for work items with many changes, it is hard to **follow the Status** of a work item **over time**. That's why we created this small extension. It shows all Status changes since the creation of the work item in form of a timeline.
 
-![State History Presentation](https://github.com/jazz-community/rtc-statushistory-presentation/blob/master/documentation/statusHistoryPresentationScreenshot.png)
+![State History Presentation Version 2.0.0](https://github.com/jazz-community/rtc-statushistory-presentation/blob/master/documentation/statusHistoryPresentation_V2.0.0.png)
 
 ## Good to know
 RTC allows you to customize the user interface of the work item editor to your needs, for example by writing own presentations.
@@ -9,6 +9,11 @@ RTC allows you to customize the user interface of the work item editor to your n
 This plug-in is a good starting point to learn from if you want to build your own `Non-Attribute-based Presentation` for RTC, as there seems to be no other example on the web on how to do this up until now.
 
 ## Setup Instructions
+### Download
+Grab the latest release from our [Releases Page](https://github.com/jazz-community/rtc-statushistory-presentation/releases). 
+
+If you are upgrading from Version 1.0.0, take notice that there was a breaking change in between.
+
 ### Installation & Deployment
 Deploy it into RTC just like any other update-site. Instructions on how to do this can be found e.g. [here](https://github.com/jazz-community/rtc-create-child-item-plugin#installation).
 
