@@ -1,0 +1,33 @@
+<div class="item">
+    <div class="image">
+        <div>
+            <span data-dojo-attach-point="dateDiffTooltip">${stateData.dateDiff}</span>
+            <img data-dojo-attach-point="userImageTooltip" alt="Modified by ${stateData.modifier}" class="userImage" src="${stateData.userImage}"></img>
+        </div>
+    </div>
+    <div class="details">
+        <div>
+            <table>
+                <tr>
+                    <td>
+                        <span class="attrIcon calIcon"/>
+                    </td>
+                    <td>
+                        <span class="attrIcon"></span>
+                        <span>${stateData.formattedDate}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="attrIcon"><img src="${stateData.stateIcon}" /></span>
+                    </td>
+					<td>
+                        <span>${stateData.stateName}</span>
+                        
+                    </td>
+                </tr>
+                <tr data-dojo-attach-point="resolutionRow"></tr>
+            </table>
+        </div>
+    </div>
+</div>

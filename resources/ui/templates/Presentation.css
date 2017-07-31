@@ -1,17 +1,108 @@
-.historyEntry {
-	border: 1px solid grey;
-	border-radius: 3px;
-	color: #666666;
+.expandButton {
+	margin: 6px;
+	z-index: 100;
+	background-color: #fbfbfb;
+	border: 1px solid #cacaca;
+	display: block;
+	position: relative;
+	width: 28px;
+	height: 28px;
+	line-height: 30px;
 	text-align: center;
+	font-size: 22px;
+	border-radius: 50%;
+	cursor: pointer;
 }
 
-.historyEntry  > span{
+.expandButton:hover, .expandButton:active {
+	background-color: #eee;
+}
+
+.item {
+	display: flex;
+}
+
+.userImage {
+	width: 30px;
+	height: 30px;
+	border-radius: 50%;
+}
+
+.item .image {
+	padding: 5px;
+	z-index: 100;
+	margin-top: -18px;
+	margin-bottom: 5px;
+}
+
+.item .image > div {
+  position: relative;
+  text-align: center;
+  font-size: 12px;
+}
+
+.item .image > div::after {
+	content: '';
+	width: 8px;
+	height: 0;
+	border-bottom: 1px solid #cacaca;
+	position: absolute;
+	top: 41px;
+	left: 31px;
+}
+
+.item .image span {
 	display: block;
+	clear: both;
+	background-color:white;
+	color: black;
+	font-weight: bold;
+	width: 20px;
+	height: 20px;
+	line-height: 20px;
+	text-align: center;
+	font-size: 8px;
+	border-radius: 50%;
+	border: 1px solid #cacaca;	
 	margin: 5px;
 }
 
-.historyEntryArrow {
-	margin: 0;
-	color: #666666;
-	text-align: center;
+.item .details {
+	width: calc(100% - 42px);
+	margin-right: 5px;
+}
+
+.item .details > div {
+	border: 1px solid #cacaca;
+	background: #fbfbfb;
+	border-radius: 4px;
+	margin-left:1px;
+	padding: 6px;
+	width: calc(100% - 13px);
+	margin-top: 5px;
+}
+
+.item .details > div > span {
+	vertical-align: middle;
+	line-height: 16px;
+}
+
+.item .details::before {
+  content: '';
+  width: 0;
+  height: 100%;
+  border: 1px solid #cacaca;
+  position: absolute;
+  top: 0;
+  left: 20px;
+}
+
+.attrIcon {
+	width: 16px;
+	height: 16px;
+}
+
+.calIcon {
+	display: inline-block;
+	background-image: url('com.siemens.bt.jazz.rtc.workItemEditor.presentation.statusHistory/ui/images/calendarGrey_16x16.png');
 }
