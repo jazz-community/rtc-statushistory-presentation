@@ -46,7 +46,6 @@ define([
 			var url = JAZZ.getApplicationBaseUrl() + "service/com.ibm.team.workitem.common.internal.rest.IWorkItemRestService/workItemDTO2?id=" + workItemId + "&includeAttributes=false&includeLinks=false&includeApprovals=false&includeHistory=true&includeLinkHistory=false";
 			XHR.oslcXmlGetRequest(url).then(function(data) {
 				var changes = data.getElementsByTagName("changes");
-				console.log("hist data: ", changes);
 				for(var i = 0; i < changes.length; i++) {
 					var content = changes[i].getElementsByTagName("content")[0].textContent;
 					var modified = changes[i].getElementsByTagName("modifiedDate")[0].textContent;
@@ -55,7 +54,6 @@ define([
 						modified: modified
 					});
 				}
-				console.log(self.stateDelegates);
 			});
 		},
 
@@ -194,10 +192,8 @@ define([
 		},
 		
 		_getStateDelegate: function(date) {
-			//console.log(date, this.stateDelegates);
 			for(var i = 0; i < this.stateDelegates.length; i++) {
 				if(this.stateDelegates[i].modified === date) {
-					console.log(this.stateDelegates[i].content);
 					return this.stateDelegates[i].content;
 				}
 			}
