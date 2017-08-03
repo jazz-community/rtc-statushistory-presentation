@@ -33,15 +33,31 @@ define([
         },
 
         startup: function() {
-            // add user tooltip
+            this.addTooltips();
+        },
+
+        addTooltips: function() {
             new Tooltip({
                 connectId: [this.userImageTooltip],
-                label: "Modified by: <b>" + this.stateData.modifier + "</b>"
+                label: "Modified by: <b>" + this.stateData.modifier + "</b>",
+                position: ["before", "after"]
             });
             new Tooltip({
                 connectId: [this.dateDiffTooltip],
-                label: "Starting " + this.formattedDate + ", this work item was in the state " + this.stateData.stateName + " for <b>" + this.stateData.dateDiff + " days</b>"
+                label: "Starting " + this.formattedDate + ", this work item was in the state " + this.stateData.stateName + " for <b>" + this.stateData.dateDiff + " days</b>",
+                position: ["before", "after"]
             });
+            if(this.stateDelegate !== null) {
+                new Tooltip({
+                    connectId: [this.delegatedHistoryEntry],
+                    label: "<span class=\"delegatedHistoryEntry\">"
+                            + "<img class=\"userImage\" src=\"" + this.userImage + "\"></img>"
+                            + "<p>" + this.stateData.modifier + "<br> changed on " + this.formattedDate + ": </p>"
+                            + this.stateDelegate
+                        + "</span>",
+                    position: ["before", "after"]
+                });
+            }
         }
     });
 });

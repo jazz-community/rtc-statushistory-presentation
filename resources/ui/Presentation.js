@@ -29,6 +29,7 @@ define([
 		itemId: null,
 		states: null,
 		initStateSize: null,
+		stateDelegates: [],
 		
         constructor: function(args) {
             this.instanceID = ++this._classProperties.instanceID;
@@ -37,7 +38,26 @@ define([
 			this.itemId = args.workItem.itemId;
 			this.initStateSize = 3;
 			this.createStateHistory(args.workItem.id, this.itemId);
-        },
+			this.getHistoryDelegatedUIs(args.workItem.id);
+		},
+		
+		getHistoryDelegatedUIs: function(workItemId) {
+			var self = this;
+			var url = JAZZ.getApplicationBaseUrl() + "service/com.ibm.team.workitem.common.internal.rest.IWorkItemRestService/workItemDTO2?id=" + workItemId + "&includeAttributes=false&includeLinks=false&includeApprovals=false&includeHistory=true&includeLinkHistory=false";
+			XHR.oslcXmlGetRequest(url).then(function(data) {
+				var changes = data.getElementsByTagName("changes");
+				console.log("hist data: ", changes);
+				for(var i = 0; i < changes.length; i++) {
+					var content = changes[i].getElementsByTagName("content")[0].textContent;
+					var modified = changes[i].getElementsByTagName("modifiedDate")[0].textContent;
+					self.stateDelegates.push({
+						content: content,
+						modified: modified
+					});
+				}
+				console.log(self.stateDelegates);
+			});
+		},
 
 		/**
 		 * create a state history presentation for a specific work item
@@ -148,6 +168,7 @@ define([
 				var curState = allStates[i];
 				if(prevState.stateId !== curState.stateId) {
 					prevState.dateDiff = self._getDateDiff(prevState.modified, curState.modified);
+					prevState.stateDelegate = self._getStateDelegate(prevState.modified);
 					stateChanges.push(curState);
 					prevState = curState;
 				}
@@ -155,6 +176,8 @@ define([
 			
 			// calculate date difference
 			stateChanges[stateChanges.length -1].dateDiff = self._getDateDiff(prevState.modified, prevLoadedOldestDate);
+			stateChanges[stateChanges.length -1].stateDelegate = self._getStateDelegate(prevState.modified);
+
 
 			// add state entry tu UI
 			for(var i = stateChanges.length - 1; i >= 0; i--) {
@@ -168,6 +191,17 @@ define([
                         });
 				new HistoryEntry(stateData).placeAt(self.historyContainer);
 			}
+		},
+		
+		_getStateDelegate: function(date) {
+			//console.log(date, this.stateDelegates);
+			for(var i = 0; i < this.stateDelegates.length; i++) {
+				if(this.stateDelegates[i].modified === date) {
+					console.log(this.stateDelegates[i].content);
+					return this.stateDelegates[i].content;
+				}
+			}
+			return null;
 		},
 
 		_getDateDiff: function(d1, d2) {

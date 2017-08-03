@@ -36,9 +36,10 @@
 }
 
 .item .image > div {
-  position: relative;
-  text-align: center;
-  font-size: 12px;
+	position: relative;
+	text-align: center;
+	font-size: 12px;
+	cursor: help;
 }
 
 .item .image > div::after {
@@ -65,11 +66,13 @@
 	border-radius: 50%;
 	border: 1px solid #cacaca;	
 	margin: 5px;
+	cursor: help;
 }
 
 .item .details {
 	width: calc(100% - 42px);
 	margin-right: 5px;
+	cursor: help;
 }
 
 .item .details > div {
@@ -88,13 +91,13 @@
 }
 
 .item .details::before {
-  content: '';
-  width: 0;
-  height: 100%;
-  border: 1px solid #cacaca;
-  position: absolute;
-  top: 0;
-  left: 20px;
+	content: '';
+	width: 0;
+	height: 100%;
+	border: 1px solid #cacaca;
+	position: absolute;
+	top: 0;
+	left: 20px;
 }
 
 .attrIcon {
@@ -105,4 +108,24 @@
 .calIcon {
 	display: inline-block;
 	background-image: url('com.siemens.bt.jazz.rtc.workItemEditor.presentation.statusHistory/ui/images/calendarGrey_16x16.png');
+}
+
+.delegatedHistoryEntry > img {
+	display: inline-block;
+}
+
+.delegatedHistoryEntry > p {
+	display: inline-block;
+	padding: 1px;
+	margin: 0;
+	color: black;
+	margin-left: 5px;
+}
+
+.delegatedHistoryEntry > table {
+	border-top: 1px solid #cacaca;
+}
+
+.delegatedHistoryEntry > table td {
+	padding: 3px 8px 0px 0px;
 }
