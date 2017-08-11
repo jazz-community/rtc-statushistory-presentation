@@ -91,12 +91,9 @@ define([
 		},
 
 		getStateRange: function(itemId, states, startIdx, endIdx, isAll) {
-			console.log(itemId, states, startIdx, endIdx, isAll);
 			var slicedStates = states.slice(startIdx, endIdx);
-			console.log(slicedStates);
 			var isAll = isAll || states.length === slicedStates.length;
 			var prevLoadedOldestDate = startIdx > 0 ? states[startIdx - 1].modified : new Date();
-			console.log(itemId, slicedStates, isAll, prevLoadedOldestDate);
 			this.getFullStates(itemId, slicedStates, isAll, prevLoadedOldestDate);
 		},
 
@@ -116,7 +113,6 @@ define([
 				} else {
 					self._addExpandButton();
 				}
-				console.log(allStates, prevLoadedOldestDate); 
 				self.processStates(allStates, prevLoadedOldestDate);
 			});
 		},
