@@ -91,9 +91,12 @@ define([
 		},
 
 		getStateRange: function(itemId, states, startIdx, endIdx, isAll) {
+			console.log(itemId, states, startIdx, endIdx, isAll);
 			var slicedStates = states.slice(startIdx, endIdx);
+			console.log(slicedStates);
 			var isAll = isAll || states.length === slicedStates.length;
 			var prevLoadedOldestDate = startIdx > 0 ? states[startIdx - 1].modified : new Date();
+			console.log(itemId, slicedStates, isAll, prevLoadedOldestDate);
 			this.getFullStates(itemId, slicedStates, isAll, prevLoadedOldestDate);
 		},
 
@@ -113,6 +116,7 @@ define([
 				} else {
 					self._addExpandButton();
 				}
+				console.log(allStates, prevLoadedOldestDate); 
 				self.processStates(allStates, prevLoadedOldestDate);
 			});
 		},
@@ -131,14 +135,14 @@ define([
 			XHR.oslcJsonGetRequest(stateInfoUrl).then(function(data) {
 				var resolution = (typeof data["rtc_cm:resolution"] !== "undefined") ? data["rtc_cm:resolution"] : {};
 				dfd.resolve({
-					modified: data["dcterms:modified"],
-					stateName: data["rtc_cm:state"]["dcterms:title"],
-					stateId: data["rtc_cm:state"]["rdf:about"],
-					stateIcon: data["rtc_cm:state"]["rtc_cm:iconUrl"],
-					modifier: data["rtc_cm:modifiedBy"]["foaf:name"],
-					modifierUri: data["rtc_cm:modifiedBy"]["rdf:about"],
-					resolution: resolution["dcterms:title"],
-					resolutionIcon: resolution["rtc_cm:iconUrl"]
+					modified: data["dcterms:modified"] || "",
+					stateName: data["rtc_cm:state"]["dcterms:title"] || "",
+					stateId: data["rtc_cm:state"]["rdf:about"] || "",
+					stateIcon: data["rtc_cm:state"]["rtc_cm:iconUrl"] || "",
+					modifier: data["rtc_cm:modifiedBy"]["foaf:name"] || "",
+					modifierUri: data["rtc_cm:modifiedBy"]["rdf:about"] || "",
+					resolution: resolution["dcterms:title"] || "",
+					resolutionIcon: resolution["rtc_cm:iconUrl"] || ""
 				});
 			});
 			return dfd;
