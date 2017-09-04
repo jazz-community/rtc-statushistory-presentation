@@ -38,10 +38,10 @@ define([
 			this.itemId = args.workItem.itemId;
 			this.initStateSize = 3;
 			this.createStateHistory(args.workItem.id, this.itemId);
-			this.getHistoryDelegatedUIs(args.workItem.id);
 		},
 		
 		getHistoryDelegatedUIs: function(workItemId) {
+			var dfd = new Deferred();
 			var self = this;
 			var url = JAZZ.getApplicationBaseUrl() + "service/com.ibm.team.workitem.common.internal.rest.IWorkItemRestService/workItemDTO2?id=" + workItemId + "&includeAttributes=false&includeLinks=false&includeApprovals=false&includeHistory=true&includeLinkHistory=false";
 			XHR.oslcXmlGetRequest(url).then(function(data) {
@@ -54,7 +54,9 @@ define([
 						modified: modified
 					});
 				}
+				dfd.resolve();
 			});
+			return dfd;
 		},
 
 		/**
@@ -64,37 +66,76 @@ define([
 		 */
 		createStateHistory: function(id, itemId) {
 			var self = this;
-			var historyUrl = JAZZ.getApplicationBaseUrl() + "rpt/repository/workitem?fields=workitem/workItem[id=" + id + "]/(itemHistory/(stateId|modified)|itemId)";
+
+			var delegatedDfd = this.getHistoryDelegatedUIs(id);
+
+			var historyUrl = JAZZ.getApplicationBaseUrl() + "rpt/repository/workitem?fields=workitem/workItem[id=" + id + "]/(itemHistory/(stateId|modified|state/(*))|itemId)";
+			var historyDfd = new Deferred();
+			var states = [];
 
 			// read history of work item
 			XHR.oslcXmlGetRequest(historyUrl).then(function(data) {
 				var stateEntries = data.getElementsByTagName("itemHistory");
-				var states = [];
 				
 				// read state details from history response
 				for(var i = 0; i < stateEntries.length; i++) {
 					var stateId = stateEntries[i].getElementsByTagName("stateId")[0].textContent;
 					var modified = stateEntries[i].getElementsByTagName("modified")[0].textContent;
+					var state = stateEntries[i].getElementsByTagName("state")[0].textContent;					
 					states[i] = {
 						stateId: stateId,
-						modified: modified
+						modified: modified,
+						state: state						
 					};
 				}
 
 				// sort states
-				states.sort(function(a,b) {return (a.modified > b.modified) ? -1 : ((b.modified > a.modified) ? 1 : 0);} ); 
-				self.states = states;
-				
+				states.sort(function(a,b) {return (a.modified < b.modified) ? -1 : ((b.modified < a.modified) ? 1 : 0);} ); 
+
+				historyDfd.resolve();
+			});
+
+			all([delegatedDfd, historyDfd]).then(function() {
+				// use only history entries containing a state change
+				self.states = self.getStateChangeSubset(states, new Date());							
 				// get state subset
-				self.getStateRange(itemId, states, 0, self.initStateSize);
+				self.getStateRange(itemId, self.states, (self.states.length - self.initStateSize), self.states.length);				
 			});
 		},
 
 		getStateRange: function(itemId, states, startIdx, endIdx, isAll) {
+			if(startIdx < 0)
+				startIdx = 0;
 			var slicedStates = states.slice(startIdx, endIdx);
 			var isAll = isAll || states.length === slicedStates.length;
 			var prevLoadedOldestDate = startIdx > 0 ? states[startIdx - 1].modified : new Date();
 			this.getFullStates(itemId, slicedStates, isAll, prevLoadedOldestDate);
+		},
+
+		getStateChangeSubset: function(allStates, prevLoadedOldestDate) {
+			var self = this;
+			var stateChanges = [];
+
+			// add initial state
+			var prevState = allStates[0];
+			stateChanges.push(prevState);
+			
+			// process each history entry and analyze whether the state has changed or not
+			for(var i = 1; i < allStates.length; i++) {
+				var curState = allStates[i];
+				if(prevState.state !== curState.state) {
+					prevState.dateDiff = self._getDateDiff(prevState.modified, curState.modified);
+					prevState.stateDelegate = self._getStateDelegate(prevState.modified);
+					stateChanges.push(curState);
+					prevState = curState;
+				}
+			}			
+
+			// calculate date difference
+			stateChanges[stateChanges.length -1].dateDiff = self._getDateDiff(prevState.modified, prevLoadedOldestDate);
+			stateChanges[stateChanges.length -1].stateDelegate = self._getStateDelegate(prevState.modified);
+
+			return stateChanges;
 		},
 
 		getFullStates: function(itemId, states, isEntireHistory, prevLoadedOldestDate) {
@@ -103,7 +144,7 @@ define([
 			
 			// query complete state
 			for(var i = 0; i < states.length; i++) {
-				fullStates[i] = self.getStateInfo(itemId, states[i].stateId);
+				fullStates[i] = self.getStateInfo(itemId, states[i]);
 			}
 			
 			// wait for all history information and proceed
@@ -120,17 +161,20 @@ define([
 		/**
 		 * get work item attributes of a specific historic work item entry
 		 * @params itemId: {string} work item UUID
-		 * @params stateId: {string} historic state UUID
+		 * @params state: {object} historic state info
 		 * @returns {Deferred} the work item information  
 		 */
-		getStateInfo: function(itemId, stateId) {
+		getStateInfo: function(itemId, state) {
 			var dfd = new Deferred();
 			var self = this;
+			var stateId = state.stateId;
 			var stateInfoUrl = JAZZ.getApplicationBaseUrl() + "resource/itemOid/com.ibm.team.workitem.WorkItem/" + itemId + "/" + stateId + "?oslc.properties=rtc_cm:state{*},rtc_cm:resolution{*},dcterms:modified,rtc_cm:modifiedBy{*}";
 			
 			XHR.oslcJsonGetRequest(stateInfoUrl).then(function(data) {
 				var resolution = (typeof data["rtc_cm:resolution"] !== "undefined") ? data["rtc_cm:resolution"] : {};
 				dfd.resolve({
+					dateDiff: state.dateDiff,
+					stateDelegate: state.stateDelegate,
 					modified: data["dcterms:modified"] || "",
 					stateName: data["rtc_cm:state"]["dcterms:title"] || "",
 					stateId: data["rtc_cm:state"]["rdf:about"] || "",
@@ -151,57 +195,39 @@ define([
 		 * @params allStates: {array} array of objects containing the work item state information
 		 */
 		processStates: function(allStates, prevLoadedOldestDate) {
-			var stateChanges = [];
 			var self = this;
-			
-			// sort by modification date
-			allStates.sort(function(a,b) {return (a.modified > b.modified) ? 1 : ((b.modified > a.modified) ? -1 : 0);} ); 
-			
-			// add initial state
-			var prevState = allStates[0];
-			stateChanges.push(prevState);
-			
-			// process each history entry and analyze whether the state has changed or not
-			for(var i = 1; i < allStates.length; i++) {
-				var curState = allStates[i];
-				if(prevState.stateId !== curState.stateId) {
-					prevState.dateDiff = self._getDateDiff(prevState.modified, curState.modified);
-					prevState.stateDelegate = self._getStateDelegate(prevState.modified);
-					stateChanges.push(curState);
-					prevState = curState;
-				}
-			}
-			
-			// calculate date difference
-			stateChanges[stateChanges.length -1].dateDiff = self._getDateDiff(prevState.modified, prevLoadedOldestDate);
-			stateChanges[stateChanges.length -1].stateDelegate = self._getStateDelegate(prevState.modified);
-
-
+			var stateChanges = allStates;
 			// add state entry tu UI
 			for(var i = stateChanges.length - 1; i >= 0; i--) {
 				var stateData = stateChanges[i];
-				stateData.userImage = this._getProfileImage(stateData.modifierUri);
+				stateData.userImage = self._getProfileImage(stateData.modifierUri);
 				stateData.formattedDate = new Date(stateData.modified)
 						.toLocaleDateString('en-GB', {
 							day : 'numeric',
 							month : 'short',
 							year : 'numeric'
-                        });
-				new HistoryEntry(stateData).placeAt(self.historyContainer);
+						});
+				var he = new HistoryEntry(stateData);
+				he.placeAt(self.historyContainer);
+				he.startup();
 			}
 		},
 		
 		_getStateDelegate: function(date) {
 			for(var i = 0; i < this.stateDelegates.length; i++) {
-				if(this.stateDelegates[i].modified === date) {
+				if(this._subtractDates(this.stateDelegates[i].modified, date) === 0) {
 					return this.stateDelegates[i].content;
 				}
 			}
 			return null;
 		},
 
+		_subtractDates: function(d1, d2) {
+			return ((+Date.parse(d2)) - (+Date.parse(d1)));
+		},
+
 		_getDateDiff: function(d1, d2) {
-			return Math.round(Math.abs((+Date.parse(d2)) - (+Date.parse(d1)))/8.64e7);
+			return Math.round(Math.abs(this._subtractDates(d1, d2))/8.64e7);
 		},
 		
 		_getProfileImage: function(userUri) {
@@ -222,7 +248,7 @@ define([
             });
 			on(node, "click", function() {
 				tooltip.destroy();
-				self.getStateRange(self.itemId, self.states, self.initStateSize, self.states.length, true);
+				self.getStateRange(self.itemId, self.states, 0, self.states.length - self.initStateSize, true);
 			});
 		},
 
