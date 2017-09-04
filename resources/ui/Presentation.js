@@ -230,11 +230,17 @@ define([
 
         applyConfiguration: function(stateData, conf) {
             if(conf.timeline && conf.timeline === "STATUS") {
-                stateData.primaryIcon = stateData.stateIcon;
+				stateData.primaryIcon = stateData.stateIcon;
+				if(conf.largeIcons && conf.largeIcons === "true") {
+					var s = stateData.stateIcon;
+					stateData.primaryLargeIcon = s.substring(0, s.lastIndexOf(".")) + "_large" + s.substring(s.lastIndexOf("."));
+				} else { // default: largeIcons = false
+					stateData.primaryLargeIcon = stateData.primaryIcon;
+				}
                 stateData.primaryText = stateData.stateName;
                 stateData.secondaryIcon = stateData.userImage;
                 stateData.secondaryText = stateData.modifier;
-            } else {
+            } else { // default: timeline = USER 
                 stateData.primaryIcon = stateData.userImage;
                 stateData.primaryText = stateData.modifier;
                 stateData.secondaryIcon = stateData.stateIcon;
