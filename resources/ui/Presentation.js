@@ -26,6 +26,7 @@ define([
 		templateString: null,
 		
 		calIcon: null,
+		conf: null,
 		itemId: null,
 		states: null,
 		initStateSize: null,
@@ -37,7 +38,20 @@ define([
 			this.templateString = template;
 			this.itemId = args.workItem.itemId;
 			this.initStateSize = 3;
+			this.conf = this.setConfigurationProperties(args);
 			this.createStateHistory(args.workItem.id, this.itemId);
+		},
+
+		setConfigurationProperties: function(args) {
+			var conf = [];
+			var properties = args.presentation.properties;
+			if(typeof properties !== "undefined" && properties.length && properties.length > 0) {
+				for(var i = 0; i < properties.length; i++) {
+					var property = properties[i];
+					conf[property.key] = property.value;
+				}
+			}
+			return conf;
 		},
 		
 		getHistoryDelegatedUIs: function(workItemId) {
@@ -207,12 +221,27 @@ define([
 							month : 'short',
 							year : 'numeric'
 						});
+				self.applyConfiguration(stateData, self.conf);
 				var he = new HistoryEntry(stateData);
 				he.placeAt(self.historyContainer);
 				he.startup();
 			}
 		},
-		
+
+        applyConfiguration: function(stateData, conf) {
+            if(conf.timeline && conf.timeline === "STATUS") {
+                stateData.primaryIcon = stateData.stateIcon;
+                stateData.primaryText = stateData.stateName;
+                stateData.secondaryIcon = stateData.userImage;
+                stateData.secondaryText = stateData.modifier;
+            } else {
+                stateData.primaryIcon = stateData.userImage;
+                stateData.primaryText = stateData.modifier;
+                stateData.secondaryIcon = stateData.stateIcon;
+                stateData.secondaryText = stateData.stateName;                
+            }
+        },
+
 		_getStateDelegate: function(date) {
 			for(var i = 0; i < this.stateDelegates.length; i++) {
 				if(this._subtractDates(this.stateDelegates[i].modified, date) === 0) {

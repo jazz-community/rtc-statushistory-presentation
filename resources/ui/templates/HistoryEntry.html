@@ -2,7 +2,7 @@
     <div class="image">
         <div>
             <span data-dojo-attach-point="dateDiffTooltip">${stateData.dateDiff}</span>
-            <img data-dojo-attach-point="userImageTooltip" alt="Modified by ${stateData.modifier}" class="userImage" src="${stateData.userImage}"></img>
+            <img data-dojo-attach-point="userImageTooltip" alt="${stateData.primaryText}" class="userImage" src="${stateData.primaryIcon}"></img>
         </div>
     </div>
     <div class="details" data-dojo-attach-point="delegatedHistoryEntry">
@@ -19,11 +19,10 @@
                 </tr>
                 <tr>
                     <td>
-                        <span class="attrIcon"><img src="${stateData.stateIcon}" /></span>
+                        <span class="attrIcon"><img src="${stateData.secondaryIcon}" /></span>
                     </td>
 					<td>
-                        <span>${stateData.stateName}</span>
-                        
+                        <span>${stateData.secondaryText}</span>              
                     </td>
                 </tr>
                 <tr data-dojo-attach-point="resolutionRow"></tr>

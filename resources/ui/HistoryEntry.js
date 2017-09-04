@@ -36,7 +36,7 @@ define([
         addTooltips: function() {
             new Tooltip({
                 connectId: [this.userImageTooltip],
-                label: "Modified by: <b>" + this.stateData.modifier + "</b>",
+                label: "<b>" + this.stateData.primaryText + "</b>",
                 position: ["before", "after"]
             });
             new Tooltip({

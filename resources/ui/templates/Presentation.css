@@ -23,9 +23,12 @@
 }
 
 .userImage {
+	display: inline-block;
 	width: 30px;
 	height: 30px;
 	border-radius: 50%;
+	border: 1px solid #cacaca;
+	background-color: #fbfbfb;
 }
 
 .item .image {
@@ -100,7 +103,7 @@
 	left: 20px;
 }
 
-.attrIcon {
+.attrIcon, .attrIcon > img {
 	width: 16px;
 	height: 16px;
 }
