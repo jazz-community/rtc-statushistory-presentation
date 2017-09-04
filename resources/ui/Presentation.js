@@ -232,8 +232,11 @@ define([
             if(conf.timeline && conf.timeline === "STATUS") {
 				stateData.primaryIcon = stateData.stateIcon;
 				if(conf.largeIcons && conf.largeIcons === "true") {
+					var suffix = conf.largeIconsSuffix || "_large";
 					var s = stateData.stateIcon;
-					stateData.primaryLargeIcon = s.substring(0, s.lastIndexOf(".")) + "_large" + s.substring(s.lastIndexOf("."));
+					if(suffix.lastIndexOf(".") < 0)
+						suffix += s.substring(s.lastIndexOf("."));
+					stateData.primaryLargeIcon = s.substring(0, s.lastIndexOf(".")) + suffix;
 				} else { // default: largeIcons = false
 					stateData.primaryLargeIcon = stateData.primaryIcon;
 				}
