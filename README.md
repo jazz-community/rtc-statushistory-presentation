@@ -5,6 +5,11 @@ Rational Team Concert (RTC) has a built-in feature to view the history of a work
 
 ![State History Presentation Version 2.0.0](https://github.com/jazz-community/rtc-statushistory-presentation/blob/master/documentation/statusHistoryPresentation_V2.0.0.png)
 
+## Modes
+The default mode of the plug-in *(timeline = USER)*, uses the profile picture of the user in the left hand circle of the timeline. So the picture of the user is more dominant than the rest of the information. In some cases, it is more interesting to focus on the Status. To do so, set the configuration to STATUS mode *(timeline = STATUS)*.
+
+![Status Mode](https://github.com/jazz-community/rtc-statushistory-presentation/blob/master/documentation/statusHistoryPresentation_V2.2.0.png)
+
 ## Good to know
 RTC allows you to customize the user interface of the work item editor to your needs, for example by writing own presentations.
 
@@ -20,7 +25,7 @@ If you are upgrading from Version 1.0.0, take notice that there was a breaking c
 Deploy it into RTC just like any other update-site. Instructions on how to do this can be found e.g. [here](https://github.com/jazz-community/rtc-create-child-item-plugin#installation).
 
 ### Configuration
-- In the Web UI, open the RTC project area where you want to add the Status History presentation
+- In the **Web UI** (the Eclipse Client does NOT work for this), open the RTC project area where you want to add the Status History presentation
 - Navigate to the project area administration page and click on `Work Items` in the menu on the left side
 - In the sub-navigation, choose `Editor Presentations`<br>
 ![Instructions on how to open Editor Presentation View](https://github.com/jazz-community/rtc-statushistory-presentation/blob/master/documentation/ViewEditorPresentation_WebUI.png)
@@ -29,6 +34,17 @@ Deploy it into RTC just like any other update-site. Instructions on how to do th
 - Within the desired section, click on the green *Plus* icon, switch to `non-Attribute-based Presentation` and set the selection of **Kind** to our Status History Plug-in<br>
 ![Adding Status History Presentation to Editor Presentation](https://github.com/jazz-community/rtc-statushistory-presentation/blob/master/documentation/AddStatusHistoryPlugIn_WebUI.png)
 - Make sure that you save your configuration changes and repeat the steps for any other Editor Presentation.
+
+### Customization
+The plug-in has a few configuration possibilities. They can be changed by opening the *Editor Presentation* in the **Eclipse Client** (the WEB UI does NOT work for this). 
+
+| Key              | Value         | Default Value |
+| ---------------- | ------------- | ------------- |
+| timeline         | STATUS, USER  | USER          |
+| largeIcons       | true, false   | false         |
+| largeIconsSuffix | (string)      | \_large       |
+
+![Configure Status History Presentation in Eclipse Client](https://github.com/jazz-community/rtc-statushistory-presentation/blob/master/documentation/ConfigurePropertiesInEclipseClient.PNG)
 
 # About this Plug-In
 ## Compatibility
