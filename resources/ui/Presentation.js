@@ -244,7 +244,8 @@ define([
                 stateData.secondaryIcon = stateData.userImage;
                 stateData.secondaryText = stateData.modifier;
             } else { // default: timeline = USER 
-                stateData.primaryIcon = stateData.userImage;
+				stateData.primaryIcon = stateData.userImage;
+				stateData.primaryLargeIcon = stateData.primaryIcon;								
                 stateData.primaryText = stateData.modifier;
                 stateData.secondaryIcon = stateData.stateIcon;
                 stateData.secondaryText = stateData.stateName;                
