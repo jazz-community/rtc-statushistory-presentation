@@ -6,9 +6,7 @@ Rational Team Concert (RTC) has a built-in feature to view the history of a work
 ![State History Presentation Version 2.0.0](https://github.com/jazz-community/rtc-statushistory-presentation/blob/master/documentation/statusHistoryPresentation_V2.0.0.png)
 
 ## Modes
-The default mode of the plug-in *(timeline = USER)*, uses the profile picture of the user in the left hand circle of the timeline. So the picture of the user is more dominant than the rest of the information. In some cases, it is more interesting to focus on the Status. To do so, set the configuration to STATUS mode *(timeline = STATUS)*.
-
-![Status Mode](https://github.com/jazz-community/rtc-statushistory-presentation/blob/master/documentation/statusHistoryPresentation_V2.2.0.png)
+The default mode of the plug-in *(timeline = USER)*, uses the profile picture of the user in the left hand circle of the timeline. So the picture of the user is more dominant than the rest of the information. In some cases, it is more interesting to focus on the Status. To do so, set the configuration to STATUS mode *(timeline = STATUS)* (view example of [Status Mode](https://github.com/jazz-community/rtc-statushistory-presentation/blob/master/documentation/statusHistoryPresentation_V2.2.0.png))
 
 ## Good to know
 RTC allows you to customize the user interface of the work item editor to your needs, for example by writing own presentations.
@@ -43,6 +41,8 @@ The plug-in has a few configuration possibilities. They can be changed by openin
 | timeline         | STATUS, USER  | USER          |
 | largeIcons       | true, false   | false         |
 | largeIconsSuffix | (string)      | \_large       |
+
+To enable large icons, set *largeIcons* to *true*. Additionally, you need to add larger icons to your process. To do so, add the respective iamges as a process attachment to your project area process. The search scope of the plug-in is limited to the path **/workflow/**, so your icons need to be provided in there. 
 
 ![Configure Status History Presentation in Eclipse Client](https://github.com/jazz-community/rtc-statushistory-presentation/blob/master/documentation/ConfigurePropertiesInEclipseClient.PNG)
 
