@@ -261,7 +261,7 @@ define([
 
 		_getStateDelegate: function(date) {
 			for(var i = 0; i < this.stateDelegates.length; i++) {
-				if(this._subtractDates(this.stateDelegates[i].modified, date) === 0) {
+				if(this._getDateDiffInSeconds(this.stateDelegates[i].modified, date) === 0) {
 					return this.stateDelegates[i].content;
 				}
 			}
@@ -274,6 +274,10 @@ define([
 
 		_getDateDiff: function(d1, d2) {
 			return Math.round(Math.abs(this._subtractDates(d1, d2))/8.64e7);
+		},
+
+		_getDateDiffInSeconds: function(d1, d2) {
+			return Math.floor(Math.abs(this._subtractDates(d1, d2)/1000));
 		},
 		
 		_getProfileImage: function(userUri) {
