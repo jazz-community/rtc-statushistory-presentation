@@ -51,7 +51,7 @@ To enable large icons, set *largeIcons* to *true*. Additionally, you need to add
 This plug-in has been verified to work on RTC 6.0.3 and onward. According to our information, the mechanism for creating non-attribute-based presentations has not changed since one of the first releases of RTC, so we expect it to work with any version of RTC. If not, we would appreciate your feedback.
 
 ## Contributing
-Please use the [Issue Tracker](https://github.com/jazz-community/rtc-absence-widget/issues) of this repository to report issues or suggest enhancements.
+Please use the [Issue Tracker](https://github.com/jazz-community/rtc-statushistory-presentation/issues) of this repository to report issues or suggest enhancements.
 
 For general contribution guidelines, please refer to [CONTRIBUTING.md](https://github.com/jazz-community/rtc-statushistory-presentation/blob/master/CONTRIBUTING.md)
 
