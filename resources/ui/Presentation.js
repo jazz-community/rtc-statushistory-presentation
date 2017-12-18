@@ -39,7 +39,9 @@ define([
 			this.itemId = args.workItem.itemId;
 			this.initStateSize = 3;
 			this.conf = this.setConfigurationProperties(args);
-			this.createStateHistory(args.workItem.id, this.itemId);
+			if(args.workItem.id > 0) {
+				this.createStateHistory(args.workItem.id, this.itemId);
+			}
 		},
 
 		setConfigurationProperties: function(args) {
@@ -101,7 +103,6 @@ define([
 						modified = splitDate[1] + ":" + splitDate[2];
 						modified = new Date(modified);
 					}
-					console.log(modified);
 					var state = stateEntries[i].getElementsByTagName("state")[0].textContent;					
 					states[i] = {
 						stateId: stateId,
