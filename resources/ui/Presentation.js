@@ -97,7 +97,7 @@ define([
 				for(var i = 0; i < stateEntries.length; i++) {
 					var stateId = stateEntries[i].getElementsByTagName("stateId")[0].textContent;
 					var modified = stateEntries[i].getElementsByTagName("modified")[0].textContent;
-					var exp = /(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}\+\d{2})(\d{2})/;
+					var exp = /(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}[\+\-]\d{2})(\d{2})/;
 					var splitDate = modified.match(exp);
 					if(splitDate.length === 3) {
 						modified = splitDate[1] + ":" + splitDate[2];
