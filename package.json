@@ -22,9 +22,9 @@
   "homepage": "http://jazz-community.org",
   "dependencies": {
     "jazz-update-site-webpack-plugin": "^0.4.1",
-    "webpack": "^4.6.0"
+    "webpack": "^4.16.5"
   },
   "devDependencies": {
-    "webpack-cli": "^2.0.15"
+    "webpack-cli": "^3.1.0"
   }
 }
