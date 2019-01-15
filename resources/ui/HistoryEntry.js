@@ -49,7 +49,7 @@ define([
                     connectId: [this.delegatedHistoryEntry],
                     label: "<span class=\"delegatedHistoryEntry\">"
                             + "<img class=\"userImage\" src=\"" + this.userImage + "\"></img>"
-                            + "<p>" + this.stateData.modifier + "<br> changed on " + this.formattedDate + ": </p>"
+                            + "<p>" + this.stateData.modifier + "<br> changed on " + this.formattedDate + "</p>"
                             + this.stateDelegate
                         + "</span>",
                     position: ["before", "after"]
