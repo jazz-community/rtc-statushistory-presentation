@@ -5,3 +5,4 @@ package-lock.json
 jbe-build-wrapper.xml
 .jazzignore
 deployment-properties.ini
+.idea

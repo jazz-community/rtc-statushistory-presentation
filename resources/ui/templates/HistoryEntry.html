@@ -1,7 +1,7 @@
 <div class="item">
     <div class="image">
         <div>
-            <span data-dojo-attach-point="dateDiffTooltip">${stateData.dateDiff}</span>
+            <span class="bubble" data-dojo-attach-point="dateDiffTooltip">${stateData.dateDiff}</span>
             <img data-dojo-attach-point="userImageTooltip" alt="${stateData.primaryText}" class="userImage" src="${stateData.primaryLargeIcon}" onerror="if (this.src != '${stateData.primaryIcon}') this.src = '${stateData.primaryIcon}';"></img>
         </div>
     </div>
@@ -17,12 +17,13 @@
                         <span>${stateData.formattedDate}</span>
                     </td>
                 </tr>
+                <tr data-dojo-attach-point="daysAgoRow"></tr>
                 <tr>
                     <td>
                         <span class="attrIcon"><img src="${stateData.secondaryIcon}" /></span>
                     </td>
 					<td>
-                        <span>${stateData.secondaryText}</span>              
+                        <span>${stateData.secondaryText}</span>
                     </td>
                 </tr>
                 <tr data-dojo-attach-point="resolutionRow"></tr>
