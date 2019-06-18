@@ -59,5 +59,7 @@ For general contribution guidelines, please refer to [CONTRIBUTING.md](https://g
 Copyright (c) Siemens AG. All rights reserved.<br>
 Licensed under the [MIT](https://github.com/jazz-community/rtc-statushistory-presentation/blob/master/LICENSE) License.
 
+The _calendar_ icon by [Font Awesome](https://fontawesome.com/) is used under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) _(color has been changed)_
+
 [travis-svg]: https://travis-ci.org/jazz-community/rtc-statushistory-presentation.svg?branch=master
 [travis]: https://travis-ci.org/jazz-community/rtc-statushistory-presentation
