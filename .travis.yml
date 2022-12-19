@@ -8,7 +8,7 @@ script:
 deploy:
   provider: releases
   api_key:
-    secure: i54wiNwLmE4bhxyxJQQOCDxQlgKMJ0LaIHQKRO8qduOwRuY5CFsvrH/AO9y4B6c5t87kzUqLYO3YMlmcSyRmSEP3r0I76j2HNCNCh87CBYcW7WrTMVHBwHc/xblzXA6cZHKGWd/1ilQM92MY0AmGgtByWhiQHQ89P+gf6JOi+t/VNCjOXV3GxK67lo2LAICp71c/cKEZqo51+wpz5hXDCkOyMZJY03LJkQNf8cZFJRaRVGcOPSVjo7lcpfVG0dw1cFPobqnC3tgo28mLqjqGjuviT0OMOLNtD26fIyy2sPwEoC6mn5Tkb8mc9h/BZwXEwUMncEGJ/meemsY1JLYVl/wX96hxqn+50VITbuVm7b+F2ReV1PIG1e/XhXtI1gvRUK+R836yX7Ynzbgg5MZ4Lln+EllQWfVvbVaM9QZy6BL1yXRdpcxdSRLtzberICOpXyRH3GsHzuaxVH0/3eoup3oMnepKkRlpvMFhUUOSmwB9D0GR1z3pvbaiOAg+kGRhWJYLrzd7t5ikl28jgnYgq0svzDjsiJIHA7Xq2iUWl0jUyLSWLYmgzZL1AkDgYfOnVHyT01qongKlehcyo9vJhxUgEvC8oopqCFcYjvCWYNXqaCyx9HBo7j3AUxAV+muHYk7NYvbelMM8m698Z/ijOdMYUTdVJikKbfLAMX4L+j8=
+    secure: _
   file: com.siemens.bt.jazz.rtc.workitemeditor.presentation.statushistory*.zip
   file_glob: true
   skip_cleanup: true

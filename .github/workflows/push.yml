@@ -1,0 +1,23 @@
+name: npm build
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+      - name: npm install and build
+        id: npm_build
+        run: |
+          npm ci
+          npm run build
+        env:
+          CI: true
+      - name: Upload build result
+        uses: actions/upload-artifact@v1
+        with:
+          name: rtc-statushistory-presentation-${{ github.sha }}
+          path: ${{ steps.npm_build.outputs.output_file }}

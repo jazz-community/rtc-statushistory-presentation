@@ -1,4 +1,4 @@
-[![travis-svg][travis-svg]][travis]
+![](https://github.com/jazz-community/rtc-statushistory-presentation/workflows/npm%20build/badge.svg)
 
 # Status History Presentation for RTC
 Rational Team Concert (RTC) has a built-in feature to view the history of a work item. But especially for work items with many changes, it is hard to **follow the Status** of a work item **over time**. That's why we created this small extension. It shows all Status changes since the creation of the work item in form of a timeline.
@@ -41,8 +41,11 @@ The plug-in has a few configuration possibilities. They can be changed by openin
 | timeline         | STATUS, USER  | USER          |
 | largeIcons       | true, false   | false         |
 | largeIconsSuffix | (string)      | \_large       |
+| enableDetailedHistory | true, false   | false         |
 
 To enable large icons, set *largeIcons* to *true*. Additionally, you need to add larger icons to your process. To do so, add the respective iamges as a process attachment to your project area process. The search scope of the plug-in is limited to the path **/workflow/**, so your icons need to be provided in there. 
+
+With version 2.3.0, the detailed history, shown when hovering over an entry, is replaced with a simple version that doesn't make any additional requests. (See [Issue #17](https://github.com/jazz-community/rtc-statushistory-presentation/issues/17) for more details). The details of the state change can still be seen in the "History" tab. To reenable this feature, you need to set the "enableDetailedHistory" key to "true".
 
 ![Configure Status History Presentation in Eclipse Client](https://github.com/jazz-community/rtc-statushistory-presentation/blob/master/documentation/ConfigurePropertiesInEclipseClient.PNG)
 
@@ -60,6 +63,3 @@ Copyright (c) Siemens AG. All rights reserved.<br>
 Licensed under the [MIT](https://github.com/jazz-community/rtc-statushistory-presentation/blob/master/LICENSE) License.
 
 The _calendar_ icon by [Font Awesome](https://fontawesome.com/) is used under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) _(color has been changed)_
-
-[travis-svg]: https://travis-ci.org/jazz-community/rtc-statushistory-presentation.svg?branch=master
-[travis]: https://travis-ci.org/jazz-community/rtc-statushistory-presentation
