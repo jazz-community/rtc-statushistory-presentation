@@ -1,5 +1,4 @@
 node_modules
-package-lock.json
 *.zip
 *Bundle.js
 jbe-build-wrapper.xml

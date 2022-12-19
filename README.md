@@ -1,4 +1,4 @@
-[![travis-svg][travis-svg]][travis]
+![](https://github.com/jazz-community/rtc-statushistory-presentation/workflows/npm%20build/badge.svg)
 
 # Status History Presentation for RTC
 Rational Team Concert (RTC) has a built-in feature to view the history of a work item. But especially for work items with many changes, it is hard to **follow the Status** of a work item **over time**. That's why we created this small extension. It shows all Status changes since the creation of the work item in form of a timeline.
@@ -63,6 +63,3 @@ Copyright (c) Siemens AG. All rights reserved.<br>
 Licensed under the [MIT](https://github.com/jazz-community/rtc-statushistory-presentation/blob/master/LICENSE) License.
 
 The _calendar_ icon by [Font Awesome](https://fontawesome.com/) is used under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) _(color has been changed)_
-
-[travis-svg]: https://travis-ci.org/jazz-community/rtc-statushistory-presentation.svg?branch=master
-[travis]: https://travis-ci.org/jazz-community/rtc-statushistory-presentation
