@@ -41,8 +41,11 @@ The plug-in has a few configuration possibilities. They can be changed by openin
 | timeline         | STATUS, USER  | USER          |
 | largeIcons       | true, false   | false         |
 | largeIconsSuffix | (string)      | \_large       |
+| enableDetailedHistory | true, false   | false         |
 
 To enable large icons, set *largeIcons* to *true*. Additionally, you need to add larger icons to your process. To do so, add the respective iamges as a process attachment to your project area process. The search scope of the plug-in is limited to the path **/workflow/**, so your icons need to be provided in there. 
+
+With version 2.3.0, the detailed history, shown when hovering over an entry, is replaced with a simple version that doesn't make any additional requests. (See [Issue #17](https://github.com/jazz-community/rtc-statushistory-presentation/issues/17) for more details). The details of the state change can still be seen in the "History" tab. To reenable this feature, you need to set the "enableDetailedHistory" key to "true".
 
 ![Configure Status History Presentation in Eclipse Client](https://github.com/jazz-community/rtc-statushistory-presentation/blob/master/documentation/ConfigurePropertiesInEclipseClient.PNG)
 

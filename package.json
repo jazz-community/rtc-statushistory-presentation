@@ -1,30 +1,30 @@
 {
-  "name": "com.siemens.bt.jazz.rtc.workitemeditor.presentation.statushistory",
-  "version": "2.2.7",
-  "description": "Non-Attribute-based Work Item Editor Extension for Rational Team Concert that shows all Status changes since the creation of the work item in form of a timeline.",
-  "scripts": {
-    "build": "webpack --config ./webpack.config.js --mode production"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/jazz-community/rtc-statushistory-presentation.git"
-  },
-  "keywords": [
-    "jazz",
-    "rtc",
-    "workitem"
-  ],
-  "author": "Lukas Steiger, Siemens AG",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/jazz-community/rtc-statushistory-presentation/issues"
-  },
-  "homepage": "http://jazz-community.org",
-  "dependencies": {
-    "jazz-update-site-webpack-plugin": "^0.4.1",
-    "webpack": "^4.16.5"
-  },
-  "devDependencies": {
-    "webpack-cli": "^3.1.0"
-  }
+	"name": "com.siemens.bt.jazz.rtc.workitemeditor.presentation.statushistory",
+	"version": "2.3.0",
+	"description": "Non-Attribute-based Work Item Editor Extension for Rational Team Concert that shows all Status changes since the creation of the work item in form of a timeline.",
+	"scripts": {
+		"build": "webpack --config ./webpack.config.js --mode production"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/jazz-community/rtc-statushistory-presentation.git"
+	},
+	"keywords": [
+		"jazz",
+		"rtc",
+		"workitem"
+	],
+	"author": "Lukas Steiger, Siemens AG",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/jazz-community/rtc-statushistory-presentation/issues"
+	},
+	"homepage": "http://jazz-community.org",
+	"dependencies": {
+		"jazz-update-site-webpack-plugin": "^0.4.1",
+		"webpack": "^4.16.5"
+	},
+	"devDependencies": {
+		"webpack-cli": "^3.1.0"
+	}
 }
