@@ -1,0 +1,29 @@
+name: GitHub release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+      - name: npm install and build
+        id: npm_build
+        run: |
+          npm ci
+          npm run build
+        env:
+          CI: true
+      - name: Upload release
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: https://uploads.github.com/repos/${{ github.repository }}/releases/${{ github.event.release.id }}/assets?name=${{ steps.npm_build.outputs.output_file }}
+          asset_path: ./${{ steps.npm_build.outputs.output_file }}
+          asset_name: ${{ steps.npm_build.outputs.output_file }}
+          asset_content_type: application/zip
