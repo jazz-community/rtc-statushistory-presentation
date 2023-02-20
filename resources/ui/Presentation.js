@@ -31,6 +31,9 @@ define([
 		states: null,
 		initStateSize: null,
 		stateDelegates: [],
+		soonDaysDifference: undefined,
+
+		workItem: null,
 
 		constructor: function (args) {
 			this.instanceID = ++this._classProperties.instanceID;
@@ -39,6 +42,7 @@ define([
 			this.itemId = args.workItem.itemId;
 			this.initStateSize = 2;
 			this.conf = this.setConfigurationProperties(args);
+			this.workItem = args.workItem;
 			if (args.workItem.id > 0) {
 				this.createStateHistory(args.workItem.id, this.itemId);
 			}
@@ -285,7 +289,12 @@ define([
 			for (var i = stateChanges.length - 1; i >= 1 - isExpanding; i--) {  //if it is unexpanded we want to keep first item for special treatment
 				var he = this.createHistoryEntry(stateChanges[i], self, false);
 				he.placeAt(self.historyStati);
-				he.startup();
+
+				if (!isExpanding && stateChanges.length - 1 == i) {
+					self._trySoonDaysTransform(he);
+				} else {
+					he.startup();
+				}
 			}
 
 			if (!isExpanding) {
@@ -295,7 +304,25 @@ define([
 					dojo.style(specialHe.dateDiffTooltip, 'visibility', 'hidden');
 				}
 				specialHe.placeAt(self.oldestStatus);
-				specialHe.startup();
+
+				if (allStates.length <= 1) {
+					self._trySoonDaysTransform(specialHe);
+				} else {
+					specialHe.startup();
+				}
+			}
+		},
+
+		_trySoonDaysTransform: function (hoverElement) {
+			var dueDaysObject = this._getDueDaysObject();
+
+			if (dueDaysObject) {
+				dojo.style(hoverElement.dateDiffTooltip, 'background-color', dueDaysObject.color);
+				dojo.style(hoverElement.dateDiffTooltip, 'color', 'white');
+
+				hoverElement.startup(dueDaysObject.message);
+			} else {
+				hoverElement.startup();
 			}
 		},
 
@@ -374,6 +401,161 @@ define([
 			query('.expandButton').forEach(domConstruct.destroy);
 			var bubbles = query('.bubble');
 			for (var i = 0; i < bubbles.length; i++) { dojo.style(bubbles[i], 'visibility', 'visible') }
+		},
+
+		_getDueDaysObject: function () {
+
+			if (this.conf && this.conf.soonDays) {
+				try {
+
+					var endDate = null;
+
+					var dueDateAttribute = this.workItem.attributes.dueDate;
+					var plannedFor = this.workItem.attributes.target;
+
+					var usingPlannedFor = false;
+
+					// Try to set the due date
+					if (dueDateAttribute.id) {
+						endDate = new Date(dueDateAttribute.id);
+					}
+
+					if (plannedFor && plannedFor.endDate) {
+						var plannedForEndDate = new Date(plannedFor.endDate);
+
+						if (!endDate || plannedForEndDate < endDate) {
+							endDate = plannedForEndDate;
+							usingPlannedFor = true;
+						}
+					}
+
+					// Check if a date could have been assigned
+					if (!this._isDateValid(endDate)) {
+						console.warn("[Status History] Failed to determine 'end date'");
+						return null;
+					}
+
+					var resolutionDate = this.workItem.attributes.resolutionDate;
+
+					// Check if the item was resolved. The ID will only be set if this is the case
+					if (resolutionDate.id) {
+						return null;
+					}
+
+					var severityId = this.workItem.attributes.internalSeverity.id;
+
+					// Check if there is a severity
+					if (!severityId) {
+						return null;
+					}
+
+					var soonDaysConfig = JSON.parse(this.conf.soonDays);
+
+					var soonDays = soonDaysConfig[severityId];
+
+					if (soonDays == undefined) {
+						soonDays = soonDaysConfig['*'];
+					}
+
+					if (soonDays) {
+
+						var soonDaysDays = undefined;
+
+						if (typeof soonDays == "number") {
+							soonDaysDays = soonDays * (1000 * 60 * 60 * 24);
+						}
+
+						else if (typeof soonDays == "string" && soonDays.endsWith("%")) {
+
+							try {
+								var dayPercentage = Number(soonDays.substring(0, soonDays.length - 1));
+
+								var startDate = null;
+
+								startDate = new Date(this.workItem.attributes.creationDate.id);
+
+								if (plannedFor.startDate) {
+
+									var plannedForStartDate = new Date(plannedFor.startDate);
+
+									if (this._isDateValid(plannedForStartDate)) {
+
+										if (usingPlannedFor) {
+											startDate = plannedForStartDate;
+										} else if (plannedForStartDate < endDate) {
+											startDate = plannedForStartDate;
+										}
+
+									}
+								}
+
+								// Check if a start date could be found
+								if (!this._isDateValid(startDate)) {
+									console.warn("[Status History] Failed to determine 'start date'");
+									return null;
+								}
+
+								soonDaysDays = (endDate - startDate) * (dayPercentage / 100);
+							} catch (error) {
+								console.warn("[Status History] Value for key ( " + severityId + " ) isn't a number", error);
+								return null;
+							}
+						}
+
+						var dayDifferenceMS = (endDate - new Date());
+
+						var returnObject = {
+							message: '',
+							color: '#ffffff'
+						};
+
+						var absDifference = Math.abs(dayDifferenceMS);
+
+						var cd = 24 * 60 * 60 * 1000,													// Divider Days
+							ch = 60 * 60 * 1000,														// Divider Hours
+							days = Math.floor(absDifference / cd),
+							hours = Math.floor((absDifference - days * cd) / ch),
+							minutes = Math.round((absDifference - days * cd - hours * ch) / 60000);
+
+						var daysString = "";
+
+						if (days != 0) {
+							daysString += days + " days ";
+						}
+
+						if (hours != 0 || days != 0) {
+							daysString += hours + " hours ";
+						}
+
+						daysString += minutes + " minutes";
+
+						if (dayDifferenceMS <= 0) {
+							returnObject.message = 'Overdue by <b>' + daysString + '</b>';
+							returnObject.color = '#dc2626'; // tw red 600
+						} else if (dayDifferenceMS <= soonDaysDays) {
+							returnObject.message = 'Due date in <b>' + daysString + '</b>';
+							returnObject.color = '#f59e0b'; // tw orange 500
+						} else {
+							return null;
+						}
+
+						return returnObject;
+
+
+					} else {
+						console.warn("[Status History] No valid config entry found for severity: " + severityId);
+						return null;
+					}
+
+				} catch (error) {
+					console.warn("[Status History] Soon days config isn't valid");
+					return null;
+				}
+			}
+		},
+
+		_isDateValid: function (checkDate) {
+			return Boolean(checkDate) && typeof checkDate == 'object' && !isNaN(checkDate);
 		}
 	});
 });

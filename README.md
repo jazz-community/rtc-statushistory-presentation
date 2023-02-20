@@ -36,18 +36,78 @@ Deploy it into RTC just like any other update-site. Instructions on how to do th
 ### Customization
 The plug-in has a few configuration possibilities. They can be changed by opening the *Editor Presentation* in the **Eclipse Client** (the WEB UI does NOT work for this). 
 
-| Key              | Value         | Default Value |
-| ---------------- | ------------- | ------------- |
-| timeline         | STATUS, USER  | USER          |
-| largeIcons       | true, false   | false         |
-| largeIconsSuffix | (string)      | \_large       |
+| Key                   | Value         | Default Value |
+| --------------------- | ------------- | ------------- |
+| timeline              | STATUS, USER  | USER          |
+| largeIcons            | true, false   | false         |
+| largeIconsSuffix      | (string)      | \_large       |
 | enableDetailedHistory | true, false   | false         |
+| soonDays              | ( JSON )      |               |
 
-To enable large icons, set *largeIcons* to *true*. Additionally, you need to add larger icons to your process. To do so, add the respective iamges as a process attachment to your project area process. The search scope of the plug-in is limited to the path **/workflow/**, so your icons need to be provided in there. 
+To enable large icons, set *largeIcons* to *true*. Additionally, you need to add larger icons to your process. To do so, add the respective images as a process attachment to your project area process. The search scope of the plug-in is limited to the path **/workflow/**, so your icons need to be provided in there. 
 
 With version 2.3.0, the detailed history, shown when hovering over an entry, is replaced with a simple version that doesn't make any additional requests. (See [Issue #17](https://github.com/jazz-community/rtc-statushistory-presentation/issues/17) for more details). The details of the state change can still be seen in the "History" tab. To reenable this feature, you need to set the "enableDetailedHistory" key to "true".
 
 ![Configure Status History Presentation in Eclipse Client](https://github.com/jazz-community/rtc-statushistory-presentation/blob/master/documentation/ConfigurePropertiesInEclipseClient.PNG)
+
+#### **soonDays configuration**
+
+The "soonDays" feature allows you to show a colored indicator when the work item comes close to the 'end date' or when it's over the 'end date'.
+
+If no configuration is found this feature will be ignored. 
+
+The configuration requires the 'id' of the severity as it's key. For the value the amount of days ( number ) will be used. The value defines when the minimal difference in days before the indicator will be displayed in an orange color and display the remaining days. 
+
+For a more dynamic use you can also define how many percentage points should be left, before showing the indicator. You can do that by using the "%" character.
+
+**Example:** Between start and the end date are 10 days. We've set the value to `"20%"`. This will make the indicator start to be shown `2 Days` before the end date is reached.
+
+If the 'end date' has surpassed the current date, the indicator will turn red and display the time past.
+
+In order for the 'soonDays' feature to enable the following conditions need to be met:
+- A 'end date' needs to be defined. One of the following will be used
+	- The 'due date' of the work item
+	- The 'End Date' of the 'Planned For'
+- A configuration was defined under the 'soonDays' key
+- The severity must be able to be resolved by the configuration
+- The work item **can't be resolved**
+
+```json
+{
+	"severity.literal.l0": 0.5,
+	"severity.literal.l1": 4,
+	"severity.literal.l2": "20%"
+}
+```
+
+##### How the start and end date gets determent
+
+###### start date
+The 'start date' is only needed if the value is a percentage.
+The system will use the 'creation date' of the work item as the 'start date'. If the work item has a 'planned for' will that be used instead.
+
+###### end date
+If a 'due date' is set it will be used as the 'end date'. 
+If the work item has a 'Planned for' and the date of the 'Planned for' is before the 'due date', the 'end date' of the 'Planned for' will be used instead.
+
+##### fallback value
+If the system can't find the 'severity' in the configuration it will try to use the fallback value. You can define this by setting "*" as the key in the configuration.
+
+```json
+{
+	"*": 5
+}
+```
+
+##### full example
+```json
+{
+	"severity.literal.l3": 20,
+	"severity.literal.l4": 30,
+	"*": 5
+}
+```
+
 
 # About this Plug-In
 ## Compatibility
