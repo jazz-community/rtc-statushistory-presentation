@@ -461,6 +461,10 @@ define([
 
 						var soonDaysDays = undefined;
 
+						if (typeof soonDays == "object" && soonDays.due && soonDays.planned) {
+							soonDays = usingPlannedFor ? soonDays.planned : soonDays.due;
+						}
+
 						if (typeof soonDays == "number") {
 							soonDaysDays = soonDays * (1000 * 60 * 60 * 24);
 						}
@@ -480,9 +484,7 @@ define([
 
 									if (this._isDateValid(plannedForStartDate)) {
 
-										if (usingPlannedFor) {
-											startDate = plannedForStartDate;
-										} else if (plannedForStartDate < endDate) {
+										if (usingPlannedFor || plannedForStartDate < endDate) {
 											startDate = plannedForStartDate;
 										}
 

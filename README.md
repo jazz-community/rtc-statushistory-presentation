@@ -56,9 +56,20 @@ The "soonDays" feature allows you to show a colored indicator when the work item
 
 If no configuration is found this feature will be ignored. 
 
-The configuration requires the 'id' of the severity as it's key. For the value the amount of days ( number ) will be used. The value defines when the minimal difference in days before the indicator will be displayed in an orange color and display the remaining days. 
+The configuration requires the 'id' of the severity as it's key. For the value the amount of days ( number ) will be used. The value defines when the minimal difference in days before the indicator will be displayed in an orange color and showing the remaining days. 
 
 For a more dynamic use you can also define how many percentage points should be left, before showing the indicator. You can do that by using the "%" character.
+
+If you want to use different values based on when the "Due Date" or "Planned For" is selected for the calculation you can wrap the value in a JSON-Object. The JSON-Object **needs** to contain the "due" and "planned" key.
+
+```JSON
+{
+	"severity.literal.l0": { 
+		"due": 7,
+		"planned": "20%"
+	}
+}
+```
 
 **Example:** Between start and the end date are 10 days. We've set the value to `"20%"`. This will make the indicator start to be shown `2 Days` before the end date is reached.
 
